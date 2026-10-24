@@ -25,6 +25,8 @@
 // The board itself
 /*
 - An array of 3x3 boards with some proper integers initalized
+    - Each 3x3 board can have at least 1-5 integers already in position
+    - This means we have to check the given integers positions to make sure it is supposed to be there!
 - Use ASCII art to have a nice looking board design + show numbers too!
 
 */
@@ -32,31 +34,53 @@
 // Checking board to see if they win or lose a try
 /*
 - If all the numbers are in their UNIQUE position, then the user wins!
+    - If there is a valid number there, don't do anything to that.
 - If the user runs out of tries, they a try
     - If all tries given reach 0, end the game and say they lost
 
 */
-
-
 // Player losing: The player is given 5 tries to solve the entire soduku puzzle and if we reach 0, they have lost!
 // Player winning: The entire board itself is filled with the proper numbers 
 
 """
 
 import ASCII_ART
+def check_row_col_position(row: int, col: int) -> bool:
+    if (row < 0 or row > 8) and (col < 0 or col > 8):
+        return False
+    return True
 
 def check_user_number_input(number: int) -> bool:
     if number <= 0 or number > 9:
         return False
     return True
 
+def initalize_board() -> list[list[str]]:
+    # initalize with '-' to indicate empty space:
+    board = [["-" for _ in range(9)] for _ in range(9)] # initalizes the sudoku board that consist of 9x9 matrix over all
+    return board
+
+def check_sudoku_board_recursive() -> bool:
+    pass
+
 
 def start_game(name: str) -> bool:
+    board = initalize_board()
+    ASCII_ART.print_grid(board)
+    tries = 5 # player has only 5 tries left to solve Sudoku Puzzle
     while(True):
         number = int(input("Choose a number between (1-9): "))
         if check_user_number_input(number):
-            print("working!")
-                
+            row = int(input("What row will you like to pick?(0-8): "))
+            col = int(input("What column will you like to pick?(0-8): "))
+            if not check_row_col_position(row, col):
+                continue # if user puts an invalid position 
+            if not check_sudoku_board_recursie(board, row, col):
+                tries -= 1 # user got the sudoku puzzle wrong!
+            
+        else:
+            print("Invalid number!") 
+            continue
 
         
         
@@ -83,5 +107,5 @@ if __name__ == "__main__":
     # [0, 0, 0, 0, 8, 0, 0, 7, 9]
     # ]
 
-    ASCII_ART.print_grid(board)
+    # ASCII_ART.print_grid(board)
     main()

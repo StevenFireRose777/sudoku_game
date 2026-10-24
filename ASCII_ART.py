@@ -5,7 +5,7 @@ def print_grid(board):
     for row_num, row in enumerate(board):
         print("|", end=" ")
         for col_num, item in enumerate(row):
-            print(item, end=" ")
+            print(item if item != 0 else '-', end=" ")
             if (col_num + 1) % 3 == 0:
                 print("|", end=" ")
         print()
