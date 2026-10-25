@@ -60,10 +60,55 @@ def initalize_board() -> list[list[str]]:
     board = [["-" for _ in range(9)] for _ in range(9)] # initalizes the sudoku board that consist of 9x9 matrix over all
     return board
 
-def check_sudoku_board_recursive() -> bool:
-    pass
+# note: board --> board[i][j]
+
+def check_sudoku_board_row(board, row, col, number) -> bool:
+    for j in range(9):
+        if board[row][j] == number and j != col:
+            return False # Invalid move since we had found an element before we reach a col
+    return True # Valid for the row
+
+def check_sudoku_board_col(board, row, col, number) -> bool:
+    for i in range(9):
+        if board[i][col] == number and i != col:
+            return False # Invalid move since we had found elemnent from one of the columns
+    return True # Valid for the column
 
 
+
+def check_single_board_check(board, row, col, number) -> bool:
+    # Group specified indices since we are 9x9 board
+    flag = False # boolean var to hold any of the cases and return at the end of function
+    if (row >= 0 and col >= 0) and (row <= 2 and col <= 2):
+        for i in range(0,3):
+            for j in range(0,3):
+                if board[i][j] == number and (i != row and j != col):
+                    continue
+        flag = True # 3x3 case is true!
+    elif (row > 2 and col > 2) and (row <= 5 and col <= 5):
+        for i in range(3,6):
+            for j in range(3,6):
+                if board[i][j] == number and (i != row and j != col):
+                    continue
+        flag = True # 3x3 case is true!
+    elif (row > 5 and col > 5) and (row <= 8 and col <= 8):
+        for i in range(6,9):
+            for j in range(6,9):
+                if board[i][j] == number and (i != row and j != col):
+                    continue
+        flag = True
+    return flag
+
+
+def check_sudoku_board(board, row, col, number) -> bool:
+    row_check = check_sudoku_board_row(board, row, col, number)
+    col_check = check_sudoku_board_col(board, row, col, number)
+    single_board_check = check_single_board_check(board, row, col, number)
+    if row_check and col_check and single_board_check:
+        return True # Player's number is valid!
+    return False
+
+# starting game
 def start_game(name: str) -> bool:
     board = initalize_board()
     ASCII_ART.print_grid(board)
@@ -75,8 +120,13 @@ def start_game(name: str) -> bool:
             col = int(input("What column will you like to pick?(0-8): "))
             if not check_row_col_position(row, col):
                 continue # if user puts an invalid position 
-            if not check_sudoku_board_recursie(board, row, col):
+            if not check_sudoku_board(board, row, col, number):
+                print("WRONG!")
                 tries -= 1 # user got the sudoku puzzle wrong!
+            else:
+                pass
+                # place number
+            
             
         else:
             print("Invalid number!") 
