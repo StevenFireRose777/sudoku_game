@@ -3,7 +3,6 @@
 // initated: 10/21/2026
 //Dev: FireRose
 
-
 // What we working with:
 /*
 - integers: 1-9
@@ -50,7 +49,14 @@ TODOS:
 """
 
 import ASCII_ART
+import random
 
+
+def initalize_valid_random_numbers_board(board: list[list[str]]) -> bool:
+    pass
+
+def check_user_win(board: list[list[str]]) -> bool:
+    pass
 
 def check_row_col_position(row: int, col: int) -> bool:
     if (row < 0 or row > 8) and (col < 0 or col > 8):
@@ -69,21 +75,21 @@ def initalize_board() -> list[list[str]]:
 
 # note: board --> board[i][j]
 
-def check_sudoku_board_row(board, row, col, number) -> bool:
+def check_sudoku_board_row(board: list[list[str]], row: int, col: int, number: int) -> bool:
     for j in range(9):
         if board[row][j] == number and j != col:
             return False # Invalid move since we had found an element before we reach a col
     return True # Valid for the row
 
-def check_sudoku_board_col(board, row, col, number) -> bool:
+def check_sudoku_board_col(board: list[list[str]], row: int, col: int, number: int) -> bool:
     for i in range(9):
-        if board[i][col] == number and i != col:
+        if board[i][col] == number and i != row:
             return False # Invalid move since we had found elemnent from one of the columns
     return True # Valid for the column
 
 
 
-def check_single_board_check(board, row, col, number) -> bool:
+def check_single_board_check(board: list[list[str]], row: int, col: int, number: int) -> bool:
     # Group specified indices since we are 9x9 board
     flag = False # boolean var to hold any of the cases and return at the end of function
     if (row >= 0 and col >= 0) and (row <= 2 and col <= 2):
@@ -115,6 +121,8 @@ def check_sudoku_board(board, row, col, number) -> bool:
         return True # Player's number is valid!
     return False
 
+
+
 # starting game
 def start_game(name: str) -> bool:
     board = initalize_board()
@@ -136,9 +144,13 @@ def start_game(name: str) -> bool:
 
     ASCII_ART.print_grid(board)
     tries = 5 # player has only 5 tries left to solve Sudoku Puzzle
-    while(True):
+    did_user_win = False 
+    while(not did_user_win):
+        if tries == 0:
+            break # user has lost!
         number = int(input("Choose a number between (1-9): "))
         if check_user_number_input(number):
+            # Get row & column from user
             row = int(input("What row will you like to pick?(0-8): "))
             col = int(input("What column will you like to pick?(0-8): "))
             if not check_row_col_position(row, col):
@@ -151,18 +163,23 @@ def start_game(name: str) -> bool:
             else:
                 board[row][col] = str(number) # place number
                 ASCII_ART.print_grid(board)
+                if check_user_win(board):
+                    did_user_win = True
+
+            
             
         else:
             print("Invalid number!") 
             continue
+    return did_user_win
 
         
         
 
 
 def main():
-    print("Hello! Welcome to Sudoku! Enter your name: ")
-    name = input()
+    print("Hello! Welcome to Sudoku!")
+    name = input("Enter your name: ")
     output = f"Congrats {name}!! You have won!" if start_game(name) else f"{name} has LOST!"
     print(output)
 
