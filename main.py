@@ -56,7 +56,11 @@ def initalize_valid_random_numbers_board(board: list[list[str]]) -> bool:
     pass
 
 def check_user_win(board: list[list[str]]) -> bool:
-    pass
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == '0':
+                return False # user hasn't won yet
+    return True # user has won!
 
 def check_row_col_position(row: int, col: int) -> bool:
     if (row < 0 or row > 8) and (col < 0 or col > 8):
@@ -87,8 +91,6 @@ def check_sudoku_board_col(board: list[list[str]], row: int, col: int, number: i
             return False # Invalid move since we had found elemnent from one of the columns
     return True # Valid for the column
 
-
-
 def check_single_board_check(board: list[list[str]], row: int, col: int, number: int) -> bool:
     # Group specified indices since we are 9x9 board
     flag = False # boolean var to hold any of the cases and return at the end of function
@@ -111,7 +113,6 @@ def check_single_board_check(board: list[list[str]], row: int, col: int, number:
                     continue
         flag = True
     return flag
-
 
 def check_sudoku_board(board, row, col, number) -> bool:
     row_check = check_sudoku_board_row(board, row, col, number)
