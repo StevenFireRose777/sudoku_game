@@ -42,7 +42,14 @@
 // Player losing: The player is given 5 tries to solve the entire soduku puzzle and if we reach 0, they have lost!
 // Player winning: The entire board itself is filled with the proper numbers 
 
+
+TODOS:
+1) Create an initalizer of random int (1-9) to put in each valid position
+2) Have a checker to see if player has won game
+3) Debug
 """
+
+
 
 import ASCII_ART
 def check_row_col_position(row: int, col: int) -> bool:
@@ -57,7 +64,7 @@ def check_user_number_input(number: int) -> bool:
 
 def initalize_board() -> list[list[str]]:
     # initalize with '-' to indicate empty space:
-    board = [["-" for _ in range(9)] for _ in range(9)] # initalizes the sudoku board that consist of 9x9 matrix over all
+    board = [["0" for _ in range(9)] for _ in range(9)] # initalizes the sudoku board that consist of 9x9 matrix over all
     return board
 
 # note: board --> board[i][j]
@@ -111,6 +118,22 @@ def check_sudoku_board(board, row, col, number) -> bool:
 # starting game
 def start_game(name: str) -> bool:
     board = initalize_board()
+
+    # TEST:
+    board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+    ]
+
     ASCII_ART.print_grid(board)
     tries = 5 # player has only 5 tries left to solve Sudoku Puzzle
     while(True):
@@ -122,11 +145,12 @@ def start_game(name: str) -> bool:
                 continue # if user puts an invalid position 
             if not check_sudoku_board(board, row, col, number):
                 print("WRONG!")
+                ASCII_ART.print_grid(board)
                 tries -= 1 # user got the sudoku puzzle wrong!
+                continue
             else:
-                pass
-                # place number
-            
+                board[row][col] = str(number) # place number
+                ASCII_ART.print_grid(board)
             
         else:
             print("Invalid number!") 
