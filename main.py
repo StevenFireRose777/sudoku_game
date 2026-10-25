@@ -49,9 +49,9 @@ TODOS:
 3) Debug
 """
 
-
-
 import ASCII_ART
+
+
 def check_row_col_position(row: int, col: int) -> bool:
     if (row < 0 or row > 8) and (col < 0 or col > 8):
         return False
