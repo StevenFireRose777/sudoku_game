@@ -52,7 +52,34 @@ import ASCII_ART
 import random
 
 
-def initalize_valid_random_numbers_board(board: list[list[str]]) -> bool:
+def sudoku_solver(board: list[list[str]], cur_row: int, cur_col : int) -> list[list[str]]:
+    # Check if each number is valid in each position
+    # Start index: 0, end: 8
+    # Base case: We are past the final indices, meaning our board should be done here
+    if cur_row > 8 and cur_col > 8:
+        return board
+
+    # Go through every number possibility
+    for num in range(1,10):
+        is_possible = check_sudoku_board(board, cur_row, cur_col, num)
+        if is_possible:
+            board[cur_row][cur_col] = num
+            break
+    # We want to traverse the columns in each row have a complete row
+    if cur_col <= 8:
+        return sudoku_solver(board, cur_row, cur_col + 1) # Progress the column forward in the row
+    return sudoku_solver(board, cur_row + 1, cur_col) # Move onto the next row
+    
+def initalize_valid_random_numbers_board_helper(board: list[list[str]]) -> bool:
+    # We need to get at least 17 random numbers (1-9) and each 3x3 board must have at least 1 number
+    # Empty baord == any number placed down is valid
+    # Ideal to solve the sudoku first --> take out some numbers until we have the n-th number total in the grid
+    num_rows = 0
+    num_cols = 0
+    global count
+    count = random.randint(30,45) # Easy Sudoku 
+    board = sudoku_solver(board, num_rows, num_cols)
+    # next: removing random numbers to have a proper count for an easy sudoku board
     pass
 
 def check_user_win(board: list[list[str]]) -> bool:
