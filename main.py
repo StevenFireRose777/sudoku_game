@@ -69,6 +69,10 @@ def sudoku_solver(board: list[list[str]], cur_row: int, cur_col : int) -> list[l
     if cur_col <= 8:
         return sudoku_solver(board, cur_row, cur_col + 1) # Progress the column forward in the row
     return sudoku_solver(board, cur_row + 1, cur_col) # Move onto the next row
+
+def remove_count_elements(board: list[list[str], count: int]) -> list[list[str]]:
+    pass
+
     
 def initalize_valid_random_numbers_board_helper(board: list[list[str]]) -> bool:
     # We need to get at least 17 random numbers (1-9) and each 3x3 board must have at least 1 number
@@ -76,10 +80,11 @@ def initalize_valid_random_numbers_board_helper(board: list[list[str]]) -> bool:
     # Ideal to solve the sudoku first --> take out some numbers until we have the n-th number total in the grid
     num_rows = 0
     num_cols = 0
-    global count
     count = random.randint(30,45) # Easy Sudoku 
     board = sudoku_solver(board, num_rows, num_cols)
+    board = remove_count_elements(board, count)
     # next: removing random numbers to have a proper count for an easy sudoku board
+
     pass
 
 def check_user_win(board: list[list[str]]) -> bool:
@@ -99,7 +104,7 @@ def check_user_number_input(number: int) -> bool:
         return False
     return True
 
-def initalize_board() -> list[list[str]]:
+def initalize_empty_board() -> list[list[str]]:
     # initalize with '-' to indicate empty space:
     board = [["0" for _ in range(9)] for _ in range(9)] # initalizes the sudoku board that consist of 9x9 matrix over all
     return board
@@ -153,7 +158,7 @@ def check_sudoku_board(board, row, col, number) -> bool:
 
 # starting game
 def start_game(name: str) -> bool:
-    board = initalize_board()
+    board = initalize_empty_board() # Creates an empty board of "0"s
 
     # TEST:
     board = [
