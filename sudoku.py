@@ -51,7 +51,7 @@ TODOS:
 import ASCII_ART
 import random
 
-
+# Debug this evil function
 def sudoku_solver(board: list[list[str]], cur_row: int, cur_col : int) -> list[list[str]]:
     # Check if each number is valid in each position
     # Start index: 0, end: 8
@@ -70,22 +70,36 @@ def sudoku_solver(board: list[list[str]], cur_row: int, cur_col : int) -> list[l
         return sudoku_solver(board, cur_row, cur_col + 1) # Progress the column forward in the row
     return sudoku_solver(board, cur_row + 1, cur_col) # Move onto the next row
 
-def remove_count_elements(board: list[list[str], count: int]) -> list[list[str]]:
-    pass
+def remove_count_elements(board: list[list[str]], max_removals: int) -> list[list[str]]:
+
+
+    while max_removals > 0:
+        col = random.randint(0,8)
+        row = random.randint(0,8)
+        if board[row][col] == '0':
+            continue
+        
+        board[row][col] = '0'
+        max_removals -= 1
+
+
+
+
+    return board
 
     
-def initalize_valid_random_numbers_board_helper(board: list[list[str]]) -> bool:
+def initalize_valid_random_numbers_board_helper(board: list[list[str]]) -> list[list[str]]:
     # We need to get at least 17 random numbers (1-9) and each 3x3 board must have at least 1 number
     # Empty baord == any number placed down is valid
     # Ideal to solve the sudoku first --> take out some numbers until we have the n-th number total in the grid
     num_rows = 0
     num_cols = 0
-    count = random.randint(30,45) # Easy Sudoku 
+    total_remove_cells = random.randint(40,45) # Easy-Medium Sudoku 
     board = sudoku_solver(board, num_rows, num_cols)
-    board = remove_count_elements(board, count)
+    board = remove_count_elements(board, total_remove_cells)
     # next: removing random numbers to have a proper count for an easy sudoku board
 
-    pass
+    return board
 
 def check_user_win(board: list[list[str]]) -> bool:
     for i in range(9):
@@ -159,7 +173,7 @@ def check_sudoku_board(board, row, col, number) -> bool:
 # starting game
 def start_game(name: str) -> bool:
     board = initalize_empty_board() # Creates an empty board of "0"s
-
+    board = initalize_valid_random_numbers_board_helper(board)
     # TEST:
     # board = [
     # [5, 3, 0, 0, 7, 0, 0, 0, 0],
